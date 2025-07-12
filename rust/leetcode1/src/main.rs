@@ -1,20 +1,28 @@
-fn main() {
-    println!("{}", loopfn(3))
+use llama_cpp::LlamaLLM;
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize)]
+struct Document {
+    id: String,
+    text: String,
 }
 
-fn loopfn(n: i32) -> i32 {
-    let mut res = 0;
-    for i in 1..=n {
-        res += i;
-    }
-    res
-}
-fn whilefn(n: i32) -> i32 {
-    let mut res = 0;
-    let mut i = 1;
-    while i <= n {
-        res += i;
-        i += 1;
-    }
-    res
+fn main() {
+    let documents = vec![
+        Document {
+            id: "1".to_string(),
+            text: "Hello from LlamaIndex in Rust!".to_string(),
+        },
+        Document {
+            id: "2".to_string(),
+            text: "Rust is robust & safe!".to_string(),
+        },
+    ];
+
+    // Simulate indexing data.
+    let index = LlamaLLM::new_list_index(documents);
+
+    // Simulate a query
+    let result = index.query("What does Rust provide?");
+    println!("Response: {result}");
 }
